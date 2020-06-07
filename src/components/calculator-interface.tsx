@@ -110,7 +110,7 @@ export class CalculatorInterface extends React.Component<
                     (this.state.nightMode ? 'night-mode' : '')
                 }
             >
-                {label == 'clear' ? (
+                {label === 'clear' ? (
                     <strong>C</strong>
                 ) : (
                     <i className={'fas fa-' + label}></i>
