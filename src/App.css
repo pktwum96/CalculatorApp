@@ -1,3 +1,12 @@
 .App {
     background-color: #282c34;
 }
+
+.night-mode {
+    background-color: #1a1a1a !important;
+    color: white;
+}
+
+.d-grid {
+    display: grid;
+}

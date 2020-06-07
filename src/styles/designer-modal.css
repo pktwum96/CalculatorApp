@@ -1,0 +1,34 @@
+.designer-modal {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+
+.d-block {
+    display: block !important;
+}
+
+.d-none {
+    display: none;
+}
+
+.modal-card {
+    text-align: end;
+    background-color: white;
+    margin: auto;
+    transform: translateY(10%);
+    overflow: scroll;
+    border-radius: 0.2em;
+    max-width: 640px !important;
+}
+
+.twitter-tweet-rendered {
+    margin: auto !important;
+}

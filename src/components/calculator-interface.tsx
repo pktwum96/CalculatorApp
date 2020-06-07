@@ -1,5 +1,6 @@
 import React from 'react'
 import '../styles/calculator-interface.css'
+import { DesignerModal } from './designer-modal'
 
 export interface CalculatorInterfaceProps {
     title: string
@@ -9,6 +10,7 @@ export interface CalculatorInterfaceState {
     nightMode: boolean
     valueAnswer: string
     valueInput: string
+    modalOpen: boolean
 }
 export class CalculatorInterface extends React.Component<
     CalculatorInterfaceProps,
@@ -20,6 +22,7 @@ export class CalculatorInterface extends React.Component<
             nightMode: false,
             valueAnswer: '',
             valueInput: '',
+            modalOpen: false,
         }
     }
     render() {
@@ -35,7 +38,7 @@ export class CalculatorInterface extends React.Component<
             '1',
             '2',
             '3',
-            '',
+            'Designer',
             '0',
             '.',
         ]
@@ -46,6 +49,11 @@ export class CalculatorInterface extends React.Component<
                     (this.state.nightMode ? ' night-mode' : '')
                 }
             >
+                <DesignerModal
+                    show={this.state.modalOpen}
+                    handleClose={this.hideModal}
+                />
+
                 <div
                     className={
                         'display-wrapper d-grid' +
@@ -64,10 +72,12 @@ export class CalculatorInterface extends React.Component<
                             ></i>
                         </button>
                     </div>
-                    <input className="display-output" />
+                    <div className="display-output">
+                        <h4> {this.state.valueInput || '0'}</h4>
+                    </div>
                     <div className="display-results d-grid">
                         <i className="fas fa-equals"></i>
-                        <div className="results">23455</div>
+                        <div className="results">{this.state.valueAnswer}</div>
                     </div>
                 </div>
                 <div className="display-inputs d-grid">
@@ -95,7 +105,11 @@ export class CalculatorInterface extends React.Component<
 
     private createInputButton(label: string, key: number) {
         return (
-            <button key={key} className="input-button">
+            <button
+                key={key}
+                className="input-button"
+                onClick={() => this.updateInput(label)}
+            >
                 <strong>{label}</strong>
             </button>
         )
@@ -119,9 +133,26 @@ export class CalculatorInterface extends React.Component<
         )
     }
     private setNightMode = (event: any) => {
-        console.log(this.state.nightMode)
         this.setState((state) => ({
             nightMode: !state.nightMode,
+        }))
+    }
+    private hideModal = () => {
+        this.setState({ modalOpen: false })
+    }
+    private updateInput = (value: string) => {
+        if (value === 'Designer') {
+            console.log(this.state.modalOpen)
+            this.setState((state) => ({
+                modalOpen: true,
+            }))
+            return
+        }
+        const newInput = this.state.valueInput
+        const updateInput =
+            newInput.length < 50 ? newInput.concat(value) : newInput
+        this.setState((state) => ({
+            valueInput: updateInput,
         }))
     }
 }

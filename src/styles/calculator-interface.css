@@ -8,10 +8,6 @@
     grid-template-rows: 36% 64%;
 }
 
-.d-grid {
-    display: grid;
-}
-
 .display-inputs {
     grid-template-rows: 20% 80%;
 }
@@ -58,7 +54,10 @@ input {
     color: #017c9e;
 }
 
-.night-mode {
-    background-color: #1a1a1a;
-    color: white;
+.display-output {
+    text-align: end;
+}
+
+.display-results i {
+    text-align: center;
 }
