@@ -77,7 +77,9 @@ export class CalculatorInterface extends React.Component<
                     </div>
                     <div className="display-results d-grid">
                         <i className="fas fa-equals"></i>
-                        <div className="results">{this.state.valueAnswer}</div>
+                        <div className="results">
+                            <h2>&nbsp;{this.state.valueAnswer}</h2>
+                        </div>
                     </div>
                 </div>
                 <div className="display-inputs d-grid">
@@ -123,6 +125,7 @@ export class CalculatorInterface extends React.Component<
                     'action-button ' +
                     (this.state.nightMode ? 'night-mode' : '')
                 }
+                onClick={() => this.onClickAction(label)}
             >
                 {label === 'clear' ? (
                     <strong>C</strong>
@@ -142,17 +145,109 @@ export class CalculatorInterface extends React.Component<
     }
     private updateInput = (value: string) => {
         if (value === 'Designer') {
-            console.log(this.state.modalOpen)
             this.setState((state) => ({
                 modalOpen: true,
             }))
             return
         }
-        const newInput = this.state.valueInput
-        const updateInput =
-            newInput.length < 50 ? newInput.concat(value) : newInput
+
+        if (this.validateInput(value)) {
+            const inputInState =
+                !this.state.valueInput &&
+                this.state.valueAnswer &&
+                isNaN(parseInt(value))
+                    ? this.state.valueAnswer
+                    : this.state.valueInput
+            const updateInput =
+                inputInState.length < 40
+                    ? inputInState.concat(value)
+                    : inputInState
+
+            this.setState((state) => ({
+                valueInput: updateInput,
+                valueAnswer: '',
+            }))
+        } else return
+    }
+
+    private validateInput = (newChar: string): boolean => {
+        const previousInputs = this.state.valueInput
+        const previousAnswer = this.state.valueAnswer
+        switch (newChar) {
+            case '.':
+                const splitInputs = previousInputs.split(/[^\d.]/)
+                if (splitInputs[splitInputs.length - 1].includes('.'))
+                    return false
+                break
+            case '-':
+                if (previousInputs[previousInputs.length - 1] === '-')
+                    return false
+                break
+            case '+':
+                if (previousInputs[previousInputs.length - 1] === '+')
+                    return false
+                break
+            case 'x':
+            case '÷':
+                if (
+                    (previousInputs &&
+                        isNaN(
+                            parseInt(previousInputs[previousInputs.length - 1])
+                        )) ||
+                    (!previousInputs && !previousAnswer)
+                )
+                    return false
+                break
+            default:
+                return true
+        }
+        return true
+    }
+    private onClickAction = (value: string) => {
+        switch (value) {
+            case 'minus':
+                return this.updateInput('-')
+            case 'plus':
+                return this.updateInput('+')
+            case 'divide':
+                return this.updateInput('÷')
+            case 'times':
+                return this.updateInput('x')
+            case 'clear':
+                return this.clearAllInputs()
+            case 'backspace':
+                return this.backspaceInput()
+            case 'equals':
+                return this.calculateInputs()
+            default:
+                break
+        }
+    }
+
+    private clearAllInputs = () => {
+        this.setState((state) => ({
+            valueInput: '',
+            valueAnswer: '',
+        }))
+    }
+
+    private backspaceInput = () => {
+        const inputInState = this.state.valueInput
+        const updateInput = inputInState.length
+            ? inputInState.substring(0, inputInState.length - 1)
+            : inputInState
         this.setState((state) => ({
             valueInput: updateInput,
+        }))
+    }
+
+    private calculateInputs = () => {
+        const inputInState = this.state.valueInput
+        const res = inputInState.replace('x', '*').replace('÷', '/')
+        const answer = res ? eval(res).toString() : this.state.valueAnswer
+        this.setState((state) => ({
+            valueAnswer: answer,
+            valueInput: '',
         }))
     }
 }

@@ -24,7 +24,6 @@
     background-color: white;
     margin: auto;
     transform: translateY(10%);
-    overflow: scroll;
     border-radius: 0.2em;
     max-width: 640px !important;
 }
