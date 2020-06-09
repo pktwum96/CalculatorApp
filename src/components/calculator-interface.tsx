@@ -11,6 +11,7 @@ export interface CalculatorInterfaceState {
     valueAnswer: string
     valueInput: string
     modalOpen: boolean
+    answerHistory: string[][]
 }
 export class CalculatorInterface extends React.Component<
     CalculatorInterfaceProps,
@@ -23,6 +24,7 @@ export class CalculatorInterface extends React.Component<
             valueAnswer: '',
             valueInput: '',
             modalOpen: false,
+            answerHistory: [],
         }
     }
     render() {
@@ -219,6 +221,8 @@ export class CalculatorInterface extends React.Component<
                 return this.backspaceInput()
             case 'equals':
                 return this.calculateInputs()
+            case 'undo':
+                return this.undoLatest()
             default:
                 break
         }
@@ -242,12 +246,29 @@ export class CalculatorInterface extends React.Component<
     }
 
     private calculateInputs = () => {
-        const inputInState = this.state.valueInput
+        const inputInState: string = this.state.valueInput
+        const answerHistory: string[][] = this.state.answerHistory
         const res = inputInState.replace('x', '*').replace('÷', '/')
-        const answer = res ? eval(res).toString() : this.state.valueAnswer
+        const answer: string = res
+            ? eval(res).toString()
+            : this.state.valueAnswer
+        answerHistory.push([inputInState, answer])
         this.setState((state) => ({
             valueAnswer: answer,
             valueInput: '',
         }))
+    }
+    private undoLatest = () => {
+        const answerHistory = this.state.answerHistory
+        if (answerHistory.length >= 1) {
+            const lastValues = answerHistory!.pop()
+            const previousInput = lastValues![0]
+            const previousAnswer = lastValues![1]
+            this.setState((state) => ({
+                valueAnswer: previousAnswer,
+                valueInput: previousInput,
+                answerHistory: answerHistory,
+            }))
+        }
     }
 }
