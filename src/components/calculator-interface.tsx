@@ -142,9 +142,11 @@ export class CalculatorInterface extends React.Component<
             nightMode: !state.nightMode,
         }))
     }
+
     private hideModal = () => {
         this.setState({ modalOpen: false })
     }
+
     private updateInput = (value: string) => {
         if (value === 'Designer') {
             this.setState((state) => ({
@@ -259,6 +261,12 @@ export class CalculatorInterface extends React.Component<
         const inputInState: string = this.state.valueInput
         const answerHistory: string[][] = this.state.answerHistory
         const res = inputInState.replace('x', '*').replace('÷', '/')
+
+        try {
+            eval(res)
+        } catch (err) {
+            return
+        }
         const answer: string = res
             ? eval(res).toString()
             : this.state.valueAnswer
@@ -268,6 +276,7 @@ export class CalculatorInterface extends React.Component<
             valueInput: '',
         }))
     }
+
     private undoLatest = () => {
         const answerHistory = this.state.answerHistory
         if (answerHistory.length >= 1) {
