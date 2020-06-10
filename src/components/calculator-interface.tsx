@@ -175,9 +175,9 @@ export class CalculatorInterface extends React.Component<
     private validateInput = (newChar: string): boolean => {
         const previousInputs = this.state.valueInput
         const previousAnswer = this.state.valueAnswer
+        const splitInputs = previousInputs.split(/[^\d.]/)
         switch (newChar) {
             case '.':
-                const splitInputs = previousInputs.split(/[^\d.]/)
                 if (splitInputs[splitInputs.length - 1].includes('.'))
                     return false
                 break
@@ -197,6 +197,13 @@ export class CalculatorInterface extends React.Component<
                             parseInt(previousInputs[previousInputs.length - 1])
                         )) ||
                     (!previousInputs && !previousAnswer)
+                )
+                    return false
+                break
+            case '0':
+                if (
+                    parseInt(splitInputs[splitInputs.length - 1]) === 0 &&
+                    !splitInputs[splitInputs.length - 1].includes('.')
                 )
                     return false
                 break
