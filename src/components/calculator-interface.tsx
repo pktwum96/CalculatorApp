@@ -178,7 +178,10 @@ export class CalculatorInterface extends React.Component<
         const splitInputs = previousInputs.split(/[^\d.]/)
         switch (newChar) {
             case '.':
-                if (splitInputs[splitInputs.length - 1].includes('.'))
+                if (
+                    splitInputs[splitInputs.length - 1].includes('.') ||
+                    (!previousInputs && previousAnswer.includes('.'))
+                )
                     return false
                 break
             case '-':
