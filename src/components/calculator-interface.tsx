@@ -163,7 +163,7 @@ export class CalculatorInterface extends React.Component<
                     ? this.state.valueAnswer
                     : this.state.valueInput
             const updateInput =
-                inputInState.length < 40
+                inputInState.length < 32
                     ? inputInState.concat(value)
                     : inputInState
 
