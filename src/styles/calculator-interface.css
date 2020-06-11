@@ -39,7 +39,7 @@ input {
     text-align: end;
 }
 .display-wrapper {
-    margin: 1em;
+    margin: 1em 1em 0;
     grid-template-rows: 10% 65% 25%;
     color: #017c9e;
     border-bottom: 1px #017c9e solid;
@@ -66,4 +66,8 @@ input {
 }
 button.night-mode:active {
     background-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.mobile-screen h2 {
+    margin: 0;
 }
