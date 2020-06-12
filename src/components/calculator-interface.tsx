@@ -75,7 +75,10 @@ export class CalculatorInterface extends React.Component<
                         </button>
                     </div>
                     <div className="display-output">
-                        <h4> {this.state.valueInput || '0'}</h4>
+                        <h4>
+                            &nbsp;
+                            {this.state.valueInput}
+                        </h4>
                     </div>
                     <div className="display-results d-grid">
                         <i className="fas fa-equals"></i>
