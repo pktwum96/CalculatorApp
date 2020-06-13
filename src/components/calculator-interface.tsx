@@ -81,7 +81,9 @@ export class CalculatorInterface extends React.Component<
                         </h4>
                     </div>
                     <div className="display-results d-grid">
-                        <i className="fas fa-equals"></i>
+                        {this.state.valueAnswer && (
+                            <i className="fas fa-equals"></i>
+                        )}
                         <div className="results">
                             <h2>&nbsp;{this.state.valueAnswer}</h2>
                         </div>
@@ -282,15 +284,17 @@ export class CalculatorInterface extends React.Component<
 
     private undoLatest = () => {
         const answerHistory = this.state.answerHistory
-        if (answerHistory.length >= 1) {
-            const lastValues = answerHistory!.pop()
-            const previousInput = lastValues![0]
-            const previousAnswer = lastValues![1]
-            this.setState((state) => ({
-                valueAnswer: previousAnswer,
-                valueInput: previousInput,
-                answerHistory: answerHistory,
-            }))
+        if (answerHistory) {
+            const lastValues = answerHistory.pop()
+            if (lastValues) {
+                const previousInput = lastValues[0]
+                const previousAnswer = lastValues[1]
+                this.setState((state) => ({
+                    valueAnswer: previousAnswer,
+                    valueInput: previousInput,
+                    answerHistory: answerHistory,
+                }))
+            }
         }
     }
 }
