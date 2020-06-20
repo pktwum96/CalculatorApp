@@ -28,9 +28,14 @@ export class CalculatorInterface extends React.Component<
         }
     }
     render() {
-        const upperActionButtons = ['undo', 'clear', 'divide', 'backspace']
-        const sideActionButtons = ['times', 'minus', 'plus', 'equals']
-        const inputValues = [
+        const upperActionButtons: string[] = [
+            'undo',
+            'clear',
+            'divide',
+            'backspace',
+        ]
+        const sideActionButtons: string[] = ['times', 'minus', 'plus', 'equals']
+        const inputValues: string[] = [
             '7',
             '8',
             '9',
@@ -44,22 +49,19 @@ export class CalculatorInterface extends React.Component<
             '0',
             '.',
         ]
+        const { nightMode, valueAnswer, valueInput, modalOpen } = this.state
         return (
             <div
                 className={
-                    'mobile-screen d-grid' +
-                    (this.state.nightMode ? ' night-mode' : '')
+                    'mobile-screen d-grid' + (nightMode ? ' night-mode' : '')
                 }
             >
-                <DesignerModal
-                    show={this.state.modalOpen}
-                    handleClose={this.hideModal}
-                />
+                <DesignerModal show={modalOpen} handleClose={this.hideModal} />
 
                 <div
                     className={
                         'display-wrapper d-grid' +
-                        (this.state.nightMode ? ' night-mode' : '')
+                        (nightMode ? ' night-mode' : '')
                     }
                 >
                     <div className="night-mode-icon">
@@ -67,9 +69,7 @@ export class CalculatorInterface extends React.Component<
                             <i
                                 className={
                                     'fas fa-' +
-                                    (this.state.nightMode
-                                        ? 'sun night-mode'
-                                        : 'moon')
+                                    (nightMode ? 'sun night-mode' : 'moon')
                                 }
                             ></i>
                         </button>
@@ -77,15 +77,13 @@ export class CalculatorInterface extends React.Component<
                     <div className="display-output">
                         <h4>
                             &nbsp;
-                            {this.state.valueInput}
+                            {valueInput}
                         </h4>
                     </div>
                     <div className="display-results d-grid">
-                        {this.state.valueAnswer && (
-                            <i className="fas fa-equals"></i>
-                        )}
+                        {valueAnswer && <i className="fas fa-equals"></i>}
                         <div className="results">
-                            <h2>&nbsp;{this.state.valueAnswer}</h2>
+                            <h2>&nbsp;{valueAnswer}</h2>
                         </div>
                     </div>
                 </div>
@@ -125,13 +123,11 @@ export class CalculatorInterface extends React.Component<
     }
 
     private createActionButton(label: string, key: number) {
+        const { nightMode } = this.state
         return (
             <button
                 key={key}
-                className={
-                    'action-button ' +
-                    (this.state.nightMode ? 'night-mode' : '')
-                }
+                className={'action-button ' + (nightMode ? 'night-mode' : '')}
                 onClick={() => this.onClickAction(label)}
             >
                 {label === 'clear' ? (
@@ -142,13 +138,13 @@ export class CalculatorInterface extends React.Component<
             </button>
         )
     }
-    private setNightMode = (event: any) => {
+    private setNightMode = (event: any): void => {
         this.setState((state) => ({
             nightMode: !state.nightMode,
         }))
     }
 
-    private hideModal = () => {
+    private hideModal = (): void => {
         this.setState({ modalOpen: false })
     }
 
@@ -159,14 +155,13 @@ export class CalculatorInterface extends React.Component<
             }))
             return
         }
+        const { valueInput, valueAnswer } = this.state
 
         if (this.validateInput(value)) {
             const inputInState =
-                !this.state.valueInput &&
-                this.state.valueAnswer &&
-                isNaN(parseInt(value))
-                    ? this.state.valueAnswer
-                    : this.state.valueInput
+                !valueInput && valueAnswer && isNaN(parseInt(value))
+                    ? valueAnswer
+                    : valueInput
             const updateInput =
                 inputInState.length < 32
                     ? inputInState.concat(value)
@@ -245,45 +240,42 @@ export class CalculatorInterface extends React.Component<
         }
     }
 
-    private clearAllInputs = () => {
+    private clearAllInputs = (): void => {
         this.setState((state) => ({
             valueInput: '',
             valueAnswer: '',
         }))
     }
 
-    private backspaceInput = () => {
-        const inputInState = this.state.valueInput
-        const updateInput = inputInState.length
-            ? inputInState.substring(0, inputInState.length - 1)
-            : inputInState
+    private backspaceInput = (): void => {
+        const { valueInput } = this.state
+        const updateInput = valueInput.length
+            ? valueInput.substring(0, valueInput.length - 1)
+            : valueInput
         this.setState((state) => ({
             valueInput: updateInput,
         }))
     }
 
-    private calculateInputs = () => {
-        const inputInState: string = this.state.valueInput
-        const answerHistory: string[][] = this.state.answerHistory
-        const res = inputInState.replace('x', '*').replace('÷', '/')
+    private calculateInputs = (): void => {
+        const { valueInput, answerHistory, valueAnswer } = this.state
+        const res = this.mathifyInputString(valueInput)
 
         try {
             eval(res)
         } catch (err) {
             return
         }
-        const answer: string = res
-            ? eval(res).toString()
-            : this.state.valueAnswer
-        answerHistory.push([inputInState, answer])
+        const answer: string = res ? eval(res).toString() : valueAnswer
+        answerHistory.push([valueInput, answer])
         this.setState((state) => ({
             valueAnswer: answer,
             valueInput: '',
         }))
     }
 
-    private undoLatest = () => {
-        const answerHistory = this.state.answerHistory
+    private undoLatest = (): void => {
+        const { answerHistory } = this.state
         if (answerHistory) {
             const lastValues = answerHistory.pop()
             if (lastValues) {
@@ -296,5 +288,9 @@ export class CalculatorInterface extends React.Component<
                 }))
             }
         }
+    }
+
+    private mathifyInputString = (userInput: string): string => {
+        return userInput.replace('x', '*').replace('÷', '/')
     }
 }
