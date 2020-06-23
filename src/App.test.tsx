@@ -1,9 +1,20 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import App from './App';
+import React from 'react'
+import App from './App'
+import ReactDOM from 'react-dom'
+import Enzyme, { shallow } from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16'
 
-test('renders learn react link', () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+Enzyme.configure({
+    adapter: new Adapter(),
+})
+
+describe('Calculator App', () => {
+    it('renders without crashing', () => {
+        shallow(<App />)
+    })
+    it('renders a mobile screen', () => {
+        const wrapper = shallow(<App />)
+        const app = wrapper.find('.mobile-screen')
+        expect(app).toBeDefined()
+    })
+})
