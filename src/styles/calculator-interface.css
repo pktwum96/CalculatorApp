@@ -1,73 +1,74 @@
 .mobile-screen {
-    background-color: white;
-    min-height: 100vh;
-    width: 100vw;
-    max-width: 640px;
-    margin: auto;
-    border-radius: 0.25em;
-    grid-template-rows: 36% 64%;
+	background-color: white;
+	min-height: 100vh;
+	width: 100vw;
+	max-width: 640px;
+	margin: auto;
+	border-radius: 0.25em;
+	grid-template-rows: 36% 64%;
 }
 
 .display-inputs {
-    grid-template-rows: 20% 80%;
+	grid-template-rows: 20% 80%;
 }
 
 .bottom-inputs {
-    grid-template-columns: 75% 25%;
+	grid-template-columns: 75% 25%;
 }
 
 .column-div {
-    grid-template-columns: repeat(4, 25%);
+	grid-template-columns: repeat(4, 25%);
 }
 
 .number-inputs {
-    grid-template-columns: repeat(3, 3fr);
+	grid-template-columns: repeat(3, 3fr);
 }
 
 button {
-    all: unset;
-    text-align: center;
+	all: unset;
+	text-align: center;
 }
 
 input {
-    all: unset;
+	all: unset;
 }
 
 .display-results {
-    grid-template-columns: 10% 90%;
-    margin: auto 0;
-    text-align: end;
+	grid-template-columns: 10% 90%;
+	margin: auto 0;
+	text-align: end;
 }
 .display-wrapper {
-    margin: 1em 1em 0;
-    grid-template-rows: 10% 65% 25%;
-    color: #017c9e;
-    border-bottom: 1px #017c9e solid;
+	margin: 1em 1em 0;
+	grid-template-rows: 10% 65% 25%;
+	color: #017c9e;
+	border-bottom: 1px #017c9e solid;
 }
 
 .input-button {
-    background-color: #017c9e;
-    color: white;
+	background-color: #017c9e;
+	color: white;
 }
 
 .action-button {
-    color: #017c9e;
+	color: #017c9e;
+	background-color: white;
 }
 
-.display-output {
-    text-align: end;
+.display-user-input {
+	text-align: end;
 }
 
 .display-results i {
-    margin: auto;
+	margin: auto;
 }
 .display-inputs button:active {
-    background-color: rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.5);
 }
 button.night-mode:active {
-    background-color: rgba(255, 255, 255, 0.5) !important;
+	background-color: rgba(255, 255, 255, 0.5) !important;
 }
 
 .mobile-screen h2 {
-    margin: 0;
+	margin: 0;
 }
